@@ -18,6 +18,8 @@ function App() {
   const [cursorTulips, setCursorTulips] = useState([]);
   const [floatingHearts, setFloatingHearts] = useState([]);
   const audioRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   const messages = [
     "Hello, I know this is very cringe, but I hope it will be helpful to your situation right now, kay nabantayan nako these past days nga you need some help, and I think this might be helpful.",
@@ -31,6 +33,11 @@ function App() {
     "So the lesson for this message is, I hope you will apply acceptance. If you feel burdened with your course and everything is lisud jud, just try to enjoy and love your course. For me right now, I'm doing great and I'm proud of it. Katong first year nako, nag-lisud pasad ko and ganahan ko mo-balhin og school, but right now ako siyang na-apply, giganahan rasad ko",
     "Lastly, This website is for you jud ni like ganahan ko makatabang nimo, kay kabantay sad ko sa imong mga gipang rant HAHA gasubay rako so just call me or chat me lang ha Thankyouu...💕",
   ];
+const handlePhotoClick = (photoSrc, photoIndex) => {
+  setSelectedPhoto({ src: photoSrc, index: photoIndex });
+  setShowModal(true);
+};
+
 
   // Tulip cursor effect
   useEffect(() => {
@@ -427,7 +434,7 @@ function App() {
           {/* Photo Frame 1 */}
           <div className="relative group flex-shrink-0">
             <div className="w-16 h-20 sm:w-24 sm:h-28 md:w-32 md:h-36 lg:w-40 lg:h-44 xl:w-48 xl:h-52 rounded-2xl border-4 border-white/40 bg-white/90 p-1 shadow-2xl transform rotate-3 group-hover:rotate-0 transition-all duration-500 hover:scale-105 backdrop-blur-sm">
-              <div className="w-full h-full rounded-xl overflow-hidden bg-gradient-to-br from-pink-50 to-rose-100">
+              <div className="w-full h-full rounded-xl overflow-hidden bg-gradient-to-br from-pink-50 to-rose-100 cursor-pointer" onClick={() => handlePhotoClick(photo1, 1)}>
                 <img 
                   src={photo1} 
                   alt="Memory 1" 
@@ -450,7 +457,7 @@ function App() {
           {/* Photo Frame 2 */}
           <div className="relative group flex-shrink-0">
             <div className="w-16 h-20 sm:w-24 sm:h-28 md:w-32 md:h-36 lg:w-40 lg:h-44 xl:w-48 xl:h-52 rounded-2xl border-4 border-white/40 bg-white/90 p-1 shadow-2xl transform -rotate-2 group-hover:rotate-0 transition-all duration-500 hover:scale-105 backdrop-blur-sm">
-              <div className="w-full h-full rounded-xl overflow-hidden bg-gradient-to-br from-rose-50 to-purple-100">
+             <div className="w-full h-full rounded-xl overflow-hidden bg-gradient-to-br from-rose-50 to-purple-100 cursor-pointer" onClick={() => handlePhotoClick(photo2, 2)}>
                 <img 
                   src={photo2} 
                   alt="Memory 2" 
@@ -473,7 +480,7 @@ function App() {
           {/* Photo Frame 3 */}
           <div className="relative group flex-shrink-0">
             <div className="w-16 h-20 sm:w-24 sm:h-28 md:w-32 md:h-36 lg:w-40 lg:h-44 xl:w-48 xl:h-52 rounded-2xl border-4 border-white/40 bg-white/90 p-1 shadow-2xl transform rotate-1 group-hover:rotate-0 transition-all duration-500 hover:scale-105 backdrop-blur-sm">
-              <div className="w-full h-full rounded-xl overflow-hidden bg-gradient-to-br from-purple-50 to-pink-100">
+              <div className="w-full h-full rounded-xl overflow-hidden bg-gradient-to-br from-purple-50 to-pink-100 cursor-pointer" onClick={() => handlePhotoClick(photo3, 3)}>
                 <img 
                   src={photo3} 
                   alt="Memory 3" 
@@ -562,7 +569,41 @@ function App() {
           </div>
         </div>
       </div>
+
+{/* Photo Modal */}
+{showModal && selectedPhoto && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    {/* Backdrop */}
+    <div 
+      className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+      onClick={() => setShowModal(false)}
+    ></div>
+    
+    {/* Modal Content */}
+    <div className="relative bg-white/10 backdrop-blur-lg rounded-2xl p-4 max-w-2xl max-h-[90vh] border border-white/30 shadow-2xl">
+      {/* Close Button */}
+      <button
+        onClick={() => setShowModal(false)}
+        className="absolute top-3 right-3 text-white/80 hover:text-white text-3xl leading-none z-10 bg-black/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-black/40 transition-colors"
+        style={{ cursor: 'pointer' }}
+      >
+        ×
+      </button>
+      
+      {/* Photo Display */}
+      <div className="flex items-center justify-center">
+        <img 
+          src={selectedPhoto.src} 
+          alt={`Memory ${selectedPhoto.index}`}
+          className="max-w-full max-h-[80vh] object-contain rounded-xl shadow-lg"
+        />
+      </div>
     </div>
+  </div>
+)}
+    </div>
+
+    
   );
 }
 
